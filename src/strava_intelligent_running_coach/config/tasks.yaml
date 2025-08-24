@@ -1,0 +1,106 @@
+---
+fetch_activity_history:
+  description:
+    Using {all_strava_data}, a list of all activities from the Strava API, focus on recent
+    activities (last 6 months)
+  expected_output:
+    A comprehensive list of all activities with activity IDs, types,
+    dates, distances, and durations, organized chronologically for analysis.
+  agent: activity_data_fetcher
+
+analyze_performance_trends:
+  description:
+    Analyze the detailed activity data to identify key performance insights
+    including personal records, pace trends over time, weekly training load patterns,
+    fatigue indicators, and areas for improvement. Generate actionable insights about
+    the athlete's current fitness level and training patterns.
+  expected_output:
+    A comprehensive performance analysis report including current fitness
+    level, recent PRs, pace trends, training load analysis, fatigue assessment, and
+    recommended focus areas for future training.
+  agent: performance_analytics_expert
+  context:
+    - fetch_activity_history
+
+recommend_training_distances:
+  description:
+    Based on the performance analysis, analyze current running frequency
+    and create a goal-oriented training progression plan. Calculate the time available
+    between now and {goal_date}, assess the {goal_distance} target, and determine
+    optimal training phases. Establish baseline frequency from recent training patterns,
+    then create a periodized plan with appropriate volume progression, training phases
+    (base building, build, peak, taper), and race-specific preparation.
+  expected_output: |
+    List the typical distance range (in kilometers) for each type of run the athlete should include in their weekly schedule. Use the following structure:
+    - Easy runs: min_km - max_km
+    - Long runs: min_km - max_km
+    - Recovery runs: min_km - max_km
+    - Tempo runs: min_km - max_km
+    - Intervals / Speedwork: min_km - max_km
+    - Race-specific efforts (simulation runs): min_km - max_km
+  agent: personalized_running_coach
+  context:
+    - analyze_performance_trends
+
+# generate_route_recommendations:
+#   description:
+#     Use the Strava API routes endpoint to fetch existing running routes
+#     around {location} that match the coach's distance and workout recommendations.
+#     Query the Strava routes database using location coordinates and distance filters
+#     to find community-created routes that align with training needs. Prioritize routes
+#     that match that are suitable for each workout type. Analyze
+#     route metadata including elevation profiles, popularity metrics, user ratings,
+#     and distance accuracy to select the highest quality options for each training
+#     category.
+#   expected_output:
+#     "A curated collection of Strava community routes organized by training
+#     type and distance, with detailed route analysis:\n\n**STRAVA ROUTE DATABASE:**\nFor
+#     each route provide:\n- Strava route ID and name (from route creator)\n- Exact
+#     distance and elevation profile from Strava data\n- Route popularity metrics and
+#     user ratings\n- Start/end coordinates and waypoint data\n- Polyline/GPS track
+#     from Strava route data\n- Route creator and community feedback\n- Terrain type
+#     and surface characteristics\n- Estimated completion times for different paces\n-
+#     Route difficulty rating and elevation gain\n- Traffic safety notes from community
+#     reviews\n\n**CATEGORIZED BY WORKOUT TYPE:**\n- **Base Training Routes**: Popular,
+#     moderate-elevation community routes\n- **Tempo Routes**: Rolling terrain routes
+#     with consistent gradients  \n- **Interval Routes**: Routes with marked segments
+#     or flat sections\n- **Long Run Routes**: Scenic, well-rated longer distance options\n-
+#     **Hill Training Routes**: Community hill repeat and climbing routes\n- **Recovery
+#     Routes**: Flat, easy routes highly rated for recovery\n\n**ROUTE SELECTION CRITERIA:**\n-
+#     Distance match within 0.2 miles of target\n- High community ratings (4+ stars)\n-
+#     Recent usage and positive reviews\n- Appropriate elevation profile for workout
+#     type\n- Safety considerations from user feedback\n- Proximity to {location} (within
+#     5 miles of start point)\n\nAll routes sourced from Strava's proven community database
+#     with real runner validation and local knowledge."
+#   agent: route_planning_specialist
+#   context:
+#     - recommend_training_distances
+
+create_personalized_training_plan:
+  description:
+    Create a complete week-by-week training plan from now until {goal_date}
+    to achieve {goal_distance}. Use the periodized framework and route recommendations
+    to design a progressive plan that respects the athlete's current running frequency
+    while systematically building toward the goal. Include training phases, taper
+    periods, and race-day preparation.
+  expected_output: |
+    Follow this exact structure. Do not include any additional explanation or formatting outside of what’s described below:
+    Section 1: Overview of the Training Plan
+    - Time analysis: Calculate number of weeks available until {goal_date}
+    - Goal assessment: Evaluate readiness for {goal_distance} based on current fitness
+    - Running frequency: Estimate current runs per week using recent Strava data
+    - Training phases: Divide the plan into Base, Build, Peak, and Taper phases. Specify the number of runs per week per phase.
+    Section 2: Detailed Training Plan
+      Create a table with only the following columns:
+      - Week: Training week number
+      - Day: Day of the week (e.g., Monday, Tuesday)
+      - Distance: Distance in kilometers
+      - Notes: Notes for the workout, including suggested duration and pace
+      - Organize the table by training phase (Base, Build, Peak, Taper), and clearly indicate phase transitions with timelines.
+    Section 3: Additional Analysis and Notes
+      - Race-specific preparation: Highlight any terrain, pacing, or equipment needs
+      - Risk assessment & feasibility: Analyze whether the athlete can safely complete this plan and highlight any potential risks
+  agent: personalized_running_coach
+  output_file: training_plan.md
+  context:
+    - recommend_training_distances

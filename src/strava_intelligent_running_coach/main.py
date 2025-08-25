@@ -14,7 +14,6 @@ def run():
     inputs = {
 
         'athlete_name': 'Ashley',
-        'location': '1524 Powell St, San Francisco, CA 94133, USA',
         'goal_distance': '21.1km',
         'goal_date': '2026-07-26'
     }
@@ -27,8 +26,7 @@ def train():
     """
     inputs = {
         'athlete_name': 'Ashley',
-        'location': '1524 Powell St, San Francisco, CA 94133, USA',
-        'goal_distance': '13.1',
+        'goal_distance': '21.1km',
         'goal_date': '2026-07-26'
     }
     try:
@@ -53,8 +51,7 @@ def test():
     """
     inputs = {
         'athlete_name': 'Ashley',
-        'location': '1524 Powell St, San Francisco, CA 94133, USA',
-        'goal_distance': '13.1',
+        'goal_distance': '21.1km',
         'goal_date': '2026-07-26'
     }
     try:

@@ -1,4 +1,4 @@
-#Ashley's AI Running Plan
+# Ashley's AI Running Plan
 
 I used my the Strava API to get all my activity data and created a multi-agent system with CrewAI to help me determine the best running plan for me. Check out the running plan in training_plan.md. 
 

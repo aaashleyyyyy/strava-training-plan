@@ -1,3 +1,9 @@
+#Ashley's AI Running Plan
+
+I used my the Strava API to get all my activity data and created a multi-agent system with CrewAI to help me determine the best running plan for me. Check out the running plan in training_plan.md. 
+
+There are 3 agents used to create this plan: data fetching agent, data analyzing agent, and a personalized running coach agent. 
+
 # StravaIntelligentRunningCoach Crew
 
 Welcome to the StravaIntelligentRunningCoach Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.

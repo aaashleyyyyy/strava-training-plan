@@ -26,7 +26,7 @@ def train():
     """
     inputs = {
         'athlete_name': 'Ashley',
-        'goal_distance': '21.1km',
+\        'goal_distance': '21.1 km',
         'goal_date': '2026-07-26'
     }
     try:

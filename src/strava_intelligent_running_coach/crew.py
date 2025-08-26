@@ -10,6 +10,7 @@ import requests
 from stravalib.client import Client
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 
@@ -26,6 +27,7 @@ class StravaIntelligentRunningCoachCrew:
     def activity(self):
         access_token = os.getenv("strava_access_token")
         activities_access_token = os.getenv("strava_activities_access_token")
+        # activities_access_token = "5aefc13f028f945b3df82c91633421d6f05735c9"
 
         all_activities = []
         page = 1
@@ -42,14 +44,21 @@ class StravaIntelligentRunningCoachCrew:
                 "page": page
             }
 
-            # OPTIMIZATION 3: Use session for faster connections
             response = session.get(url, params=params)
 
             activities = response.json()
+            
+            # Check if activities is a list (not an error message)
+            if not isinstance(activities, list):
+                print(f"❌ API returned error: {activities}")
+                print(activities_access_token)
+                # breakpoint()
+                return []
+                
+                
             if not activities:
                 break  # no more activities
 
-            # OPTIMIZATION 4: Use list comprehension instead of loop
             filtered_activities = [
                 {
                     'id': activity.get('id'),
@@ -68,6 +77,7 @@ class StravaIntelligentRunningCoachCrew:
 
             all_activities.extend(filtered_activities)
             page += 1
+            # breakpoint()
         return all_activities
 
     @before_kickoff
